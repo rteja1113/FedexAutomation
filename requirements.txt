@@ -1,0 +1,12 @@
+asgiref @ file:///opt/conda/conda-bld/asgiref_1661287532135/work
+certifi @ file:///croot/certifi_1665076670883/work/certifi
+Django @ file:///opt/conda/conda-bld/django_1661296381686/work
+dnspython==2.2.1
+numpy==1.24.0
+pandas==1.5.2
+pymongo==4.3.3
+python-dateutil==2.8.2
+pytz==2022.7
+six==1.16.0
+sqlparse @ file:///croot/sqlparse_1668793487206/work
+xlrd==2.0.1
