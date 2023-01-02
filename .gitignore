@@ -1,3 +1,4 @@
 datasets/
+fedexenv/
 db.sqlite3
 .idea
