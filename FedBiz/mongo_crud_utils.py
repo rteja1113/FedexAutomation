@@ -15,6 +15,10 @@ def insert_weekly_schedule(file_path: str):
     client = pymongo.MongoClient('localhost', 27017)
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
+    # for dto in daily_service["item"]["v1"]["planDtos"]:
+    #     for individual_scanner in dto["scanners"]:
+    #         individual_scanner["onRoadHoursFloat"] =
+
     fedex_driver_collection.insert_many(daily_service["item"]["v1"]["planDtos"])
     return
 
