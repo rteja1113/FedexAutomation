@@ -54,5 +54,5 @@ def preload_agg_view(request, start_date: int, end_date: int) -> HttpResponse:
     }
     agg_result = aggregate_preload_stops_and_packages_by_route(start_date, end_date)
     context["aggregated_stats"] = agg_result
-    return render(request, "basic_table.html", context)
+    return render(request, "basic_table_2.html", context)
 
