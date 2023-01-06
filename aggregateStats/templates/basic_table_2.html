@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<body>
+
+<h2>Preload Stats from {{start_date}} to {{end_date}}</h2>
+
+<table style="width:100%">
+  <tr>
+    <th>routeId</th>
+    <th>TotalStops</th>
+    <th>TotalPackages</th>
+  </tr>
+  {% for row in aggregated_stats %}
+    <tr>
+      <td>{{row.route_id}}</td>
+      <td>{{row.total_stops}}</td>
+      <td>{{row.total_packages}}</td>
+    </tr>
+  {% endfor %}
+
+</table>
+</body>
+</html>
