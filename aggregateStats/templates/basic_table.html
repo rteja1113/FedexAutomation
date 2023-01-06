@@ -12,14 +12,22 @@ table, th, td {
 <table style="width:100%">
   <tr>
     <th>DriverName</th>
+    <th>routeId</th>
     <th>actualStops</th>
     <th>actualPackages</th>
+    <th>totalOnRoadHours</th>
+    <th>totalOnDutyHours</th>
+    <th>PackagesPerDutyHour</th>
   </tr>
   {% for row in aggregated_stats %}
     <tr>
       <td>{{row.driver_name}}</td>
+      <td>{{row.route_id}}</td>
       <td>{{row.actual_stops}}</td>
       <td>{{row.actual_packages}}</td>
+      <td>{{row.total_road_hours}}</td>
+      <td>{{row.total_onduty_hours}}</td>
+      <td>{{row.packages_per_duty_hour}}</td>
     </tr>
   {% endfor %}
 
