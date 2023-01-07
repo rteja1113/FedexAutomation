@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
 <style>
-table, th, td {
-  border:1px solid black;
-}
+  table,
+  th,
+  td {
+    border: 1px solid #EFEFEF;
+  }
 </style>
+
 <body>
 
-<h2>Actual Stats from {{start_date}} to {{end_date}}</h2>
+  <h2>Actual Stats from {{start_date}} to {{end_date}}</h2>
 
-<table style="width:100%">
-  <tr>
-    <th>DriverName</th>
-    <th>routeId</th>
-    <th>actualStops</th>
-    <th>actualPackages</th>
-    <th>totalOnRoadHours</th>
-    <th>totalOnDutyHours</th>
-    <th>PackagesPerDutyHour</th>
-  </tr>
-  {% for row in aggregated_stats %}
+  <table style="width:100%">
+    <tr>
+      <th>DriverName</th>
+      <th>routeId</th>
+      <th>actualStops</th>
+      <th>actualPackages</th>
+      <th>totalOnRoadHours</th>
+      <th>totalOnDutyHours</th>
+      <th>PackagesPerDutyHour</th>
+    </tr>
+    {% for row in aggregated_stats %}
     <tr>
       <td>{{row.driver_name}}</td>
       <td>{{row.route_id}}</td>
@@ -29,8 +32,9 @@ table, th, td {
       <td>{{row.total_onduty_hours}}</td>
       <td>{{row.packages_per_duty_hour}}</td>
     </tr>
-  {% endfor %}
+    {% endfor %}
 
-</table>
+  </table>
 </body>
+
 </html>
