@@ -1,4 +1,5 @@
 import json
+import os
 from typing import List
 import logging
 import pymongo
@@ -13,11 +14,13 @@ def insert_weekly_schedule(file_path: str):
     given a path to the json document containing a collection of daily services of drivers,
     will insert it into the mongodb.
     """
+
     daily_service = json.load(open(file_path, "r"))
-    client = pymongo.MongoClient('localhost', 27017)
+    client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
     for dto in daily_service["item"]["v1"]["planDtos"]:
+        # if dto["deliveryDate"] not in fedex_driver_collection:
         for individual_scanner in dto["scanners"]:
             if individual_scanner["onRoadHours"]:
                 individual_scanner["onRoadHoursFloat"] = compute_hours(individual_scanner["onRoadHours"])
@@ -29,6 +32,7 @@ def insert_weekly_schedule(file_path: str):
                 individual_scanner["onDutyHoursFloat"] = 0.0
 
     fedex_driver_collection.insert_many(daily_service["item"]["v1"]["planDtos"])
+
     return
 
 
@@ -41,7 +45,7 @@ def aggregate_stops_and_packages_by_driver_and_route(start_date: int, end_date: 
     end_date: <int> yyyymmdd
     ex: start_date = 20221101, end_date=20221130, returns the total actual stops and actual packages for every driver
     """
-    client = pymongo.MongoClient('localhost', 27017)
+    client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
 
@@ -95,7 +99,7 @@ def aggregate_preload_stops_and_packages_by_route(start_date: int, end_date: int
     ex: start_date = 20221101, end_date=20221130, returns the total stops and packages for every route
     """
 
-    client = pymongo.MongoClient('localhost', 27017)
+    client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
 
@@ -125,14 +129,14 @@ def aggregate_preload_stops_and_packages_by_route(start_date: int, end_date: int
 
 
 if __name__ == "__main__":
-    # all_files = ["../datasets/11052022.json",
-    #              "../datasets/11122022.json",
-    #              "../datasets/11252022.json",
-    #              "../datasets/12022022.json",
-    #              "../datasets/12092022.json",
-    #              "../datasets/12162022.json",
-    #              "../datasets/12232022.json"]
-    #
-    # for json_doc in all_files:
-    #     insert_weekly_schedule(json_doc)
-    aggregate_preload_stops_and_packages_by_route(20221101, 20221223)
+    all_files = ["../datasets/11052022.json",
+                 "../datasets/11122022.json",
+                 "../datasets/11252022.json",
+                 "../datasets/12022022.json",
+                 "../datasets/12092022.json",
+                 "../datasets/12162022.json",
+                 "../datasets/12232022.json"]
+
+    for json_doc in all_files:
+        insert_weekly_schedule(json_doc)
+    # aggregate_preload_stops_and_packages_by_route(20221101, 20221223)
