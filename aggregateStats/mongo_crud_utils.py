@@ -3,24 +3,24 @@ import os
 from typing import List
 import logging
 import pymongo
+
+
 from aggregateStats.models import AggregatedDriverInfo, AggregatedPreLoadInfo
 from aggregateStats.utils import compute_hours
+
 # logger = logging.getLogger()
 
 
 # TODO: need to add logging to this module
-def insert_weekly_schedule(file_path: str):
+def insert_weekly_schedule(daily_service: dict):
     """
-    given a path to the json document containing a collection of daily services of drivers,
-    will insert it into the mongodb.
+    Given a raw dictionary inserts into Mongo
     """
 
-    daily_service = json.load(open(file_path, "r"))
     client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
     for dto in daily_service["item"]["v1"]["planDtos"]:
-        # if dto["deliveryDate"] not in fedex_driver_collection:
         for individual_scanner in dto["scanners"]:
             if individual_scanner["onRoadHours"]:
                 individual_scanner["onRoadHoursFloat"] = compute_hours(individual_scanner["onRoadHours"])
@@ -33,7 +33,6 @@ def insert_weekly_schedule(file_path: str):
 
     fedex_driver_collection.insert_many(daily_service["item"]["v1"]["planDtos"])
 
-    return
 
 
 def aggregate_stops_and_packages_by_driver_and_route(start_date: int, end_date: int) -> List:
@@ -77,16 +76,19 @@ def aggregate_stops_and_packages_by_driver_and_route(start_date: int, end_date: 
                     '$sum': '$scanners.onDutyHoursFloat'
                 }
             }
+        }, {
+           '$project': {
+            '_id': 0,
+            'driverName': '$_id.driverName',
+            'route': '$_id.route',
+            'totalPackages': '$totalPackages',
+            'totalStops': '$totalStops',
+            'totalOnRoadHours': '$totalOnRoadHours',
+            'totalOnDutyHours': '$totalOnDutyHours'
         }
+    }
     ]
     agg_results = list(fedex_driver_collection.aggregate(pipeline))
-    agg_results = [AggregatedDriverInfo(driver_name=agg_result["_id"]["driverName"],
-                                         route_id=agg_result["_id"]["route"],
-                                         actual_stops=agg_result["totalStops"],
-                                         actual_packages=agg_result["totalPackages"],
-                                         total_road_hours=agg_result["totalOnRoadHours"],
-                                         total_onduty_hours=agg_result["totalOnDutyHours"])
-                   for agg_result in agg_results]
     return agg_results
 
 
@@ -121,11 +123,17 @@ def aggregate_preload_stops_and_packages_by_route(start_date: int, end_date: int
                     '$sum': '$scannedStops'
                 }
             }
+        }, {
+           '$project': {
+            '_id': 0,
+            'route': '$_id.route',
+            'totalPackages': '$totalPackages',
+            'totalStops': '$totalStops',
         }
+    }
     ]
     agg_results = list(fedex_driver_collection.aggregate(pipeline))
-    return [AggregatedPreLoadInfo(agg_result["_id"]["route"], agg_result["totalStops"], agg_result["totalPackages"])
-            for agg_result in agg_results]
+    return agg_results
 
 
 if __name__ == "__main__":
