@@ -4,8 +4,10 @@ A repo for automating some of the Fedex P&amp;D(pick-up and delivery) contractor
 ## TODO
 - [x] add requirements.txt
 - [x] add setup in readme
-- [x] add basic working example
+- [] add basic working example
 - [] add logging
+- [] enable pre-commits with code formatting
+- [] Update README
 
 ## Setup
 ##### 1. Code
