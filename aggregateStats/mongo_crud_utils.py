@@ -44,7 +44,7 @@ def aggregate_stops_and_packages_by_driver_and_route(start_date: int, end_date: 
     end_date: <int> yyyymmdd
     ex: start_date = 20221101, end_date=20221130, returns the total actual stops and actual packages for every driver
     """
-    client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
+    client = pymongo.MongoClient(os.environ.get("MONGO_URL"))
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
 
@@ -101,7 +101,7 @@ def aggregate_preload_stops_and_packages_by_route(start_date: int, end_date: int
     ex: start_date = 20221101, end_date=20221130, returns the total stops and packages for every route
     """
 
-    client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
+    client = pymongo.MongoClient(os.environ.get("MONGO_URL"))
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
 
