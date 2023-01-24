@@ -13,8 +13,8 @@ services:
         build: ./
         # 5000 is container's port and 8000 is host's port
         ports:
-            - "8000:5000"
-        command: python manage.py runserver
+            - "8000:8000"
+        command: python manage.py runserver 0.0.0.0:8000
         environment:
           MONGO_URL: mongodb://mongodb_container:27017
 
