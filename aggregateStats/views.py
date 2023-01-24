@@ -13,8 +13,8 @@ from .mongo_crud_utils import aggregate_stops_and_packages_by_driver_and_route,\
 def home(request):
     api_urls = {
         "Uploading Driver Schedule": "/upload-driver-schedule/",
-        "Actual Stops and Packages b/w start and end date per route per driver": "actual-aggregation/?startDate=<int>&endDate=<int>/",
-        "Preload Stops and Packages b/w stat and end date per route": "preload-aggregation/?startDate=<int>&endDate<int"
+        "Actual Stops and Packages b/w start and end date per route per driver": "actual-aggregation/?startDate=yyyymmdd&endDate=yyyymmdd/",
+        "Preload Stops and Packages b/w stat and end date per route": "preload-aggregation/?startDate=yyyymmdd&endDate=yyyymmdd"
     }
     return Response(api_urls)
 #
