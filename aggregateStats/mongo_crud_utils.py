@@ -17,7 +17,7 @@ def insert_weekly_schedule(daily_service: dict):
     Given a raw dictionary inserts into Mongo
     """
 
-    client = pymongo.MongoClient(os.environ.get("MONGO_URL"), 27017)
+    client = pymongo.MongoClient(os.environ.get("MONGO_URL"))
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
     for dto in daily_service["item"]["v1"]["planDtos"]:

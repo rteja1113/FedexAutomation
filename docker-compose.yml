@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+    mongodb_container:
+        image: mongo:latest
+        restart: always
+        ports:
+            - "27017:27017"
+        volumes:
+            - "mongo_db_container:/data/db"
+
+    fedexapp_container:
+        build: ./
+        # 5000 is container's port and 8000 is host's port
+        ports:
+            - "8000:5000"
+        command: python manage.py runserver
+        environment:
+          MONGO_URL: mongodb://mongodb_container:27017
+
+
+volumes:
+    mongo_db_container:
