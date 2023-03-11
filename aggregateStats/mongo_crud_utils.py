@@ -8,7 +8,7 @@ import pymongo
 from aggregateStats.models import AggregatedDriverInfo, AggregatedPreLoadInfo
 from aggregateStats.utils import compute_hours
 
-# logger = logging.getLogger()
+logger = logging.getLogger()
 
 
 # TODO: need to add logging to this module
@@ -16,8 +16,10 @@ def insert_weekly_schedule(daily_service: dict):
     """
     Given a raw dictionary inserts into Mongo
     """
-
-    client = pymongo.MongoClient(os.environ.get("MONGO_URL"))
+    mongo_url = os.environ.get("MONGO_URL")
+    # TODO replace with logging
+    print("connecting to mongo url: ", mongo_url)
+    client = pymongo.MongoClient(mongo_url)
     db = client["FedexDB"]
     fedex_driver_collection = db["FedexDriverDailyService"]
     for dto in daily_service["item"]["v1"]["planDtos"]:
@@ -137,14 +139,15 @@ def aggregate_preload_stops_and_packages_by_route(start_date: int, end_date: int
 
 
 if __name__ == "__main__":
-    all_files = ["../datasets/11052022.json",
-                 "../datasets/11122022.json",
-                 "../datasets/11252022.json",
-                 "../datasets/12022022.json",
-                 "../datasets/12092022.json",
-                 "../datasets/12162022.json",
-                 "../datasets/12232022.json"]
-
-    for json_doc in all_files:
-        insert_weekly_schedule(json_doc)
+    # all_files = ["../datasets/11052022.json",
+    #              "../datasets/11122022.json",
+    #              "../datasets/11252022.json",
+    #              "../datasets/12022022.json",
+    #              "../datasets/12092022.json",
+    #              "../datasets/12162022.json",
+    #              "../datasets/12232022.json"]
+    #
+    # for json_doc in all_files:
+    #     insert_weekly_schedule(json_doc)
     # aggregate_preload_stops_and_packages_by_route(20221101, 20221223)
+    logger.warning("na guddha")
