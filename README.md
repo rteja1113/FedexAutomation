@@ -1,6 +1,6 @@
 # FedexAutomation
 A repo for automating some of the Fedex P&amp;D(pick-up and delivery) contractor's administrative stuff. 
-Note: I started this project to help out my uncle who was a contractor for fedex.
+Note: I started this project to help out my uncle who was working as a contractor for fedex at the time.
 
 ## TODO
 - [x] add requirements.txt
